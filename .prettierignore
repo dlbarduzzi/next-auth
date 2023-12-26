@@ -1,0 +1,11 @@
+.local/
+.vscode/
+.DS_Store
+
+dist
+.next
+build
+node_modules/
+package.json
+package-lock.json
+public
