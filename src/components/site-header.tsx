@@ -1,7 +1,7 @@
 import Link from "next/link"
 
-import { Logo } from "@/components/logo"
 import { Container } from "@/components/container"
+import { Logo, LogoMark } from "@/components/logo"
 
 export function SiteHeader() {
   return (
@@ -9,7 +9,8 @@ export function SiteHeader() {
       <Container className="flex h-20 items-center py-2">
         <div>
           <Link href="/">
-            <Logo className="w-24 md:w-32" />
+            <Logo className="hidden md:block" />
+            <LogoMark className="md:hidden" />
             <span className="sr-only">Home page link.</span>
           </Link>
         </div>
