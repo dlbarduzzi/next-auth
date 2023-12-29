@@ -8,7 +8,11 @@ export function SiteHeader() {
     <header className="border-b border-b-gray-200 bg-white">
       <Container className="flex h-20 items-center py-2">
         <div>
-          <Link href="/">
+          <Link
+            href="/"
+            className="focus-visible:outline-2 focus-visible:outline-offset-4
+              focus-visible:outline-gray-800"
+          >
             <Logo className="hidden md:block" />
             <LogoMark className="md:hidden" />
             <span className="sr-only">Home page link.</span>
