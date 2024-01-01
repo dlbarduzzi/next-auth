@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Container } from "@/components/container"
 
 import { db } from "@/lib/db"
@@ -9,9 +8,7 @@ export default async function Page() {
     <Container>
       <section aria-labelledby="homepage-header" className="py-4">
         <h2 id="homepage-header">Welcome!</h2>
-        <div className="pt-6">
-          <Button type="button">Button</Button>
-        </div>
+
         <div className="pt-6">
           <div className="space-y-3 rounded-lg bg-gray-100 px-5 py-4">
             <h3 className="font-medium text-gray-800">Users</h3>
