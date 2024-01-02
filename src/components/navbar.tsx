@@ -57,7 +57,7 @@ export function Navbar() {
               ))}
               <Link
                 prefetch={false}
-                href="/sign-in"
+                href="/login"
                 className={cn(buttonVariants(), "hidden md:inline-flex")}
               >
                 Sign in
@@ -66,7 +66,7 @@ export function Navbar() {
                 type="button"
                 onClick={() => setIsNavbarOpen(true)}
                 className="flex h-11 w-11 items-center justify-center rounded-full
-                  bg-gray-200 text-gray-600 transition-colors hover:bg-gray-300
+                  bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200
                   focus:outline-none focus:ring-2 focus:ring-gray-400
                   focus:ring-offset-2 md:hidden"
               >
