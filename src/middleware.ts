@@ -15,7 +15,7 @@ const authRoutes = ["/login", "/register"]
 const apiAuthPrefix = "/api/auth"
 
 // defaultAuthenticatedRedirect is where users are redirected to when authenticated.
-const defaultAuthenticatedRedirect = "/settings"
+export const defaultAuthenticatedRedirect = "/settings"
 
 // defaultNotUnauthenticatedRedirect is where users are redirected to when
 // not authenticated.

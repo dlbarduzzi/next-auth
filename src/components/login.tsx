@@ -4,11 +4,13 @@ import type { LoginSchema } from "@/schemas/login"
 
 import Link from "next/link"
 
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { FcGoogle } from "react-icons/fc"
-import { FaGithub } from "react-icons/fa6"
+import { FaGithub, FaCheck } from "react-icons/fa6"
+import { MdErrorOutline } from "react-icons/md"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -27,6 +29,8 @@ import { login } from "@/actions/login"
 import { loginSchema } from "@/schemas/login"
 
 export function Login() {
+  const [results, setResults] = useState({ error: "", message: "" })
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -36,7 +40,16 @@ export function Login() {
   })
 
   async function onSubmit(data: LoginSchema) {
-    await login(data)
+    setResults({ error: "", message: "" })
+
+    const res = await login(data)
+
+    if (!res.ok) {
+      setResults({ error: res.error, message: "" })
+      return
+    }
+
+    setResults({ error: "", message: res.message })
   }
 
   return (
@@ -70,6 +83,24 @@ export function Login() {
           <span className="bg-white px-6 text-gray-500">Or continue with</span>
         </div>
       </div>
+      {results.error !== "" ? (
+        <div
+          className="flex flex-wrap items-center gap-x-2 rounded bg-red-100
+            px-4 py-4"
+        >
+          <MdErrorOutline className="h-5 w-5 text-red-600" aria-hidden="true" />
+          <span className="text-sm text-red-800">{results.error}</span>
+        </div>
+      ) : null}
+      {results.message !== "" ? (
+        <div
+          className="flex flex-wrap items-center gap-x-2 rounded bg-green-100
+          px-4 py-4"
+        >
+          <FaCheck className="h-5 w-5 text-green-600" aria-hidden="true" />
+          <span className="text-sm text-green-800">{results.message}</span>
+        </div>
+      ) : null}
       <div>
         <Form {...form}>
           <form

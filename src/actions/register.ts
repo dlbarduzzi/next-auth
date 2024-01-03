@@ -2,7 +2,7 @@
 
 import type { RegisterSchema } from "@/schemas/register"
 
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 import { db } from "@/lib/db"
 import { getUserByEmail } from "@/lib/data/user"
