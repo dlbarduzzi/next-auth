@@ -4,9 +4,11 @@ import type { LoginSchema } from "@/schemas/login"
 
 import Link from "next/link"
 
+import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSearchParams } from "next/navigation"
 
 import { FcGoogle } from "react-icons/fc"
 import { FaGithub, FaCheck } from "react-icons/fa6"
@@ -27,8 +29,22 @@ import {
 
 import { login } from "@/actions/login"
 import { loginSchema } from "@/schemas/login"
+import { vars } from "@/config/vars"
+
+function getParamError(error: string) {
+  if (error?.trim() === "") {
+    return ""
+  }
+  if (error === "OAuthAccountNotLinked") {
+    return "Email already used with a different provider."
+  }
+  return "Internal server error."
+}
 
 export function Login() {
+  const searchParams = useSearchParams()
+  const paramErrorDisplay = getParamError(searchParams.get("error") || "")
+
   const [results, setResults] = useState({ error: "", message: "" })
 
   const form = useForm<LoginSchema>({
@@ -38,6 +54,12 @@ export function Login() {
       password: "",
     },
   })
+
+  function onSocialLogin(provider: "github" | "google") {
+    signIn(provider, {
+      callbackUrl: vars.defaultAuthenticatedRedirect,
+    })
+  }
 
   async function onSubmit(data: LoginSchema) {
     setResults({ error: "", message: "" })
@@ -62,13 +84,21 @@ export function Login() {
         <p className="text-sm text-gray-500">Choose your preferred sign in method.</p>
       </div>
       <div className="flex flex-col gap-y-4">
-        <Button variant="light" className="relative h-12 justify-start">
+        <Button
+          onClick={() => onSocialLogin("github")}
+          variant="light"
+          className="relative h-12 justify-start"
+        >
           <FaGithub className="h-6 w-6" aria-hidden="true" />
           <span className="absolute left-1/2 -translate-x-1/2">
             Sign in with GitHub
           </span>
         </Button>
-        <Button variant="light" className="relative h-12 justify-start">
+        <Button
+          onClick={() => onSocialLogin("google")}
+          variant="light"
+          className="relative h-12 justify-start"
+        >
           <FcGoogle className="h-6 w-6" aria-hidden="true" />
           <span className="absolute left-1/2 -translate-x-1/2">
             Sign in with Google
@@ -83,6 +113,15 @@ export function Login() {
           <span className="bg-white px-6 text-gray-500">Or continue with</span>
         </div>
       </div>
+      {results.error === "" && results.message === "" && paramErrorDisplay !== "" ? (
+        <div
+          className="flex flex-wrap items-center gap-x-2 rounded bg-red-100
+            px-4 py-4"
+        >
+          <MdErrorOutline className="h-5 w-5 text-red-600" aria-hidden="true" />
+          <span className="text-sm text-red-800">{paramErrorDisplay}</span>
+        </div>
+      ) : null}
       {results.error !== "" ? (
         <div
           className="flex flex-wrap items-center gap-x-2 rounded bg-red-100

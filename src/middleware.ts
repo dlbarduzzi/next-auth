@@ -1,29 +1,21 @@
 import NextAuth from "next-auth"
 import authConfig from "@/lib/auth.config"
 
+import { vars } from "./config/vars"
+
 const { auth } = NextAuth(authConfig)
-
-// publicRoutes allows anyone (authenticated and non-authenticated users) to
-// access the route.
-const publicRoutes = ["/"]
-
-// authRoutes redirect users to the /settings route if they are authenticated and
-// to the /login route if they are not authenticated.
-const authRoutes = ["/login", "/register"]
-
-// apiAuthPrefix routes should ALWAYS be accessible by anyone.
-const apiAuthPrefix = "/api/auth"
-
-// defaultAuthenticatedRedirect is where users are redirected to when authenticated.
-export const defaultAuthenticatedRedirect = "/settings"
-
-// defaultNotUnauthenticatedRedirect is where users are redirected to when
-// not authenticated.
-const defaultUnauthenticatedRedirect = "/login"
 
 export default auth(req => {
   const pathname = req.nextUrl.pathname
   const isAuthenticated = !!req.auth
+
+  const {
+    authRoutes,
+    publicRoutes,
+    apiAuthPrefix,
+    defaultAuthenticatedRedirect,
+    defaultUnauthenticatedRedirect,
+  } = vars
 
   if (pathname.startsWith(apiAuthPrefix)) {
     return null

@@ -6,7 +6,7 @@ import type { LoginSchema } from "@/schemas/login"
 import { signIn } from "@/lib/auth"
 import { loginSchema } from "@/schemas/login"
 
-import { defaultAuthenticatedRedirect } from "@/middleware"
+import { vars } from "@/config/vars"
 
 type ErrorResponse = {
   ok: false
@@ -34,7 +34,7 @@ export async function login(data: LoginSchema): Promise<Response> {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: defaultAuthenticatedRedirect,
+      redirectTo: vars.defaultAuthenticatedRedirect,
     })
 
     return { ok: true, message: "User authenticated." }
